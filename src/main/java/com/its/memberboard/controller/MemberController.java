@@ -6,10 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,6 +39,28 @@ public class MemberController {
         } else {
             return new ResponseEntity<>("사용불가", HttpStatus.CONFLICT);
         }
+
+    }
+
+    @GetMapping("/member/login")
+    public String loginForm() {
+        return "memberPages/member_login";
+    }
+
+    @PostMapping("/member/login")
+    public String login(@ModelAttribute MemberDTO memberDTO,
+                        HttpSession session,
+                        Model model) {
+        MemberDTO result = memberService.login(memberDTO);
+
+        if (result != null) {
+            model.addAttribute("login", result);
+            session.setAttribute("login", result);
+            return "boardPages/board_list";
+        } else {
+            return "index";
+        }
+
 
     }
 }

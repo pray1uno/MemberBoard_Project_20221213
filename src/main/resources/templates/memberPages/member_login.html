@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>member_login</title>
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-  <sciprt th:src="@{js/axios.min.js}"></sciprt>
-  <script th:src="@{/js/jquery.js}"></script>
+    <meta charset="UTF-8">
+    <title>member_login</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <sciprt th:src="@{js/axios.min.js}"></sciprt>
+    <script th:src="@{/js/jquery.js}"></script>
 </head>
 <body>
+<div class="container">
+    <form action="/member/login" method="post" name="loginForm">
+        <label for="memberEmail">이메일</label>
+        <input type="text" name="memberEmail" id="memberEmail" class="form-control" placeholder="이메일">
+        <br>
 
+        <label for="memberPassword">비밀번호</label>
+        <input type="text" name="memberPassword" id="memberPassword" class="form-control" placeholder="비밀번호">
+        <br>
+
+        <div>
+            <input type="button" value="로그인" onclick="member_login()" class="btn btn-outline-primary">
+            <input type="button" value="홈으로" onclick="toHome1()" class="btn btn-outline-secondary">
+        </div>
+    </form>
+</div>
 </body>
+<script th:inline="javascript">
+    const member_login = () => {
+        document.loginForm.submit();
+    }
+
+    const toHome1 = () => {
+        location.href = "/";
+    }
+</script>
 </html>
