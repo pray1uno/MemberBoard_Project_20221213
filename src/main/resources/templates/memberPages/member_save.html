@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>member_save</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/axios.min.js}"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+</head>
+<body>
+<div class="container">
+    <form action="/member/save" method="post" enctype="multipart/form-data" name="saveForm">
+        <label for="memberEmail">이메일</label>
+        <input type="text" name="memberEmail" id="memberEmail" class="form-control" placeholder="이메일"
+               onblur="emailCheck()">
+        <span id="email_inner"></span>
+        <br>
+
+        <label for="memberPassword">비밀번호</label>
+        <input type="text" name="memberPassword" id="memberPassword" class="form-control" placeholder="비밀번호"
+               onblur="passCheck()">
+        <span id="pass_inner"></span>
+        <br>
+
+        <label for="memberName">이름</label>
+        <input type="text" name="memberName" id="memberName" class="form-control" placeholder="이름">
+        <br>
+
+        <label for="memberMobile">전화번호</label>
+        <input type="text" name="memberMobile" id="memberMobile" class="form-control" placeholder="000-0000-0000"
+               onblur="mobileCheck()">
+        <span id="mobile_inner"></span>
+        <br>
+
+        <input type="file" maxlength="memberProfile" id="memberProfile" class="form-control">
+        <div>
+            <input type="button" class="btn" value="회원가입" onclick="toNewSave()">
+        </div>
+    </form>
+</div>
+</body>
+<script th:inline="javascript">
+    const checkExpMobile = /^\d{3}-\d{4}-\d{4}$/;
+    const checkExpPW = /^[a-zA-Z\d-_!#]{1,50}$/
+    const inner = document.getElementById("email_inner");
+
+    const toNewSave = () => {
+        const check = inner.innerHTML == "이미 사용중인 이메일 입니다.";
+        const pw_regular = document.getElementById("memberPassword").value;
+        const mob_regular = document.getElementById("memberMobile").value;
+
+        if (pw_regular.match(checkExpPW) && mob_regular.match(checkExpMobile) && !check) {
+            document.saveForm.submit();
+        } else if (check) {
+            alert("중복된 이메일로는 가입할 수 없습니다!");
+            return false;
+        } else if (!pw_regular.match(checkExpPW) || !mob_regular.match(checkExpMobile)) {
+            alert("가입 정보를 확인하세요!");
+            return false;
+        }
+    }
+
+    const emailCheck = () => {
+        const inputEmail = document.getElementById("memberEmail").value;
+        const result = document.getElementById("email_inner");
+
+        axios({
+            method: "post",
+            url: "/member/dup-check",
+            params: {
+                inputEmail: inputEmail
+            }
+        }).then(res => {
+            console.log(res);
+            if (inputEmail.length == 0) {
+                result.innerHTML = "";
+            } else if (inputEmail.length > 0 && res) {
+                result.innerHTML = "사용할 수 있는 이메일 입니다.";
+                result.style.color = "green";
+            }
+        }).catch(err => {
+            console.log(err);
+            if (inputEmail.length == 0) {
+                result.innerHTML = "";
+            } else if (inputEmail.length > 0 && err) {
+                result.innerHTML = "이미 사용중인 이메일 입니다.";
+                result.style.color = "red";
+            }
+        })
+
+    }
+
+    const passCheck = () => {
+        const inputPassword = document.getElementById("memberPassword").value;
+        const result = document.getElementById("pass_inner");
+
+        if (!inputPassword.match(checkExpPW) && inputPassword.length != 0) {
+            result.innerHTML = "특수문자는 -, _, !, #만 입력할 수 있으며, 최대 50자까지 입력 가능합니다.";
+            result.style.color = "red";
+            return false;
+        } else if (inputPassword.length == 0) {
+            result.innerHTML = "";
+        } else {
+            result.innerHTML = "사용할 수 있는 비밀번호 입니다.";
+            result.style.color = "green";
+        }
+
+    }
+
+    const mobileCheck = () => {
+        const inputMobile = document.getElementById("memberMobile").value;
+        const result = document.getElementById("mobile_inner");
+
+        if (!inputMobile.match(checkExpMobile) && inputMobile.length != 0) {
+            result.innerHTML = "'-' 까지 정확하게 입력 해주시기 바랍니다.";
+            result.style.color = "red";
+            return false;
+        } else if (inputMobile.length == 0) {
+            result.innerHTML = "";
+        } else {
+            result.innerHTML = "확인 되었습니다.";
+            result.style.color = "green";
+        }
+
+    }
+</script>
+</html>

@@ -28,11 +28,8 @@ public class MemberEntity extends BaseEntity{
     @Column(length = 15)
     private String memberName;
 
-    @Column
+    @Column(length = 20)
     private String memberMobile;
-
-    @Column
-    private LocalDateTime memberCreatedDate;
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardEntity> boardEntityList = new ArrayList<>();
@@ -50,7 +47,6 @@ public class MemberEntity extends BaseEntity{
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
         memberEntity.setMemberName(memberDTO.getMemberName());
         memberEntity.setMemberMobile(memberDTO.getMemberMobile());
-        memberEntity.setMemberCreatedDate(memberDTO.getMemberCreatedDate());
 
         return memberEntity;
     }
@@ -63,7 +59,6 @@ public class MemberEntity extends BaseEntity{
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
         memberEntity.setMemberName(memberDTO.getMemberName());
         memberEntity.setMemberMobile(memberDTO.getMemberMobile());
-        memberEntity.setMemberCreatedDate(memberDTO.getMemberCreatedDate());
 
         return memberEntity;
     }
