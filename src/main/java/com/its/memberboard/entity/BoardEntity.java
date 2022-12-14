@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "board_table")
-public class BoardEntity {
+public class BoardEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,9 +29,6 @@ public class BoardEntity {
 
     @Column
     private int boardHits;
-
-    @Column
-    private LocalDateTime boardCreatedDate;
 
     @Column
     private String fileAttached;
@@ -52,7 +49,6 @@ public class BoardEntity {
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardWriter(boardDTO.getBoardWriter());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
-        boardEntity.setBoardCreatedDate(boardDTO.getBoardCreatedDate());
         boardEntity.setBoardHits(0);
         boardEntity.setFileAttached("N");
 
@@ -65,7 +61,6 @@ public class BoardEntity {
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardWriter(boardDTO.getBoardWriter());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
-        boardEntity.setBoardCreatedDate(boardDTO.getBoardCreatedDate());
         boardEntity.setBoardHits(0);
         boardEntity.setFileAttached("Y");
 
@@ -79,9 +74,7 @@ public class BoardEntity {
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardWriter(boardDTO.getBoardWriter());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
-        boardEntity.setBoardCreatedDate(boardDTO.getBoardCreatedDate());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
-        boardEntity.setFileAttached(boardDTO.getFileAttached());
 
         return boardEntity;
 

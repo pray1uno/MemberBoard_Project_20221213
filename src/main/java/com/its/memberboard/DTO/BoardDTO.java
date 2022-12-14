@@ -1,11 +1,15 @@
 package com.its.memberboard.DTO;
 
 import com.its.memberboard.entity.BoardEntity;
+import com.its.memberboard.entity.BoardFileEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,8 +20,13 @@ public class BoardDTO {
     private String boardWriter;
     private String boardContents;
     private int boardHits;
-    private LocalDateTime boardCreatedDate;
     private String fileAttached;
+    private LocalDateTime boardCreatedTime;
+    private LocalDateTime boardUpdatedTime;
+
+    private List<MultipartFile> boardFile;
+    private List<String> originalFileName;
+    private List<String> storedFileName;
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
         BoardDTO boardDTO = new BoardDTO();
@@ -27,9 +36,25 @@ public class BoardDTO {
         boardDTO.setBoardWriter(boardEntity.getBoardWriter());
         boardDTO.setBoardContents(boardEntity.getBoardContents());
         boardDTO.setBoardHits(boardEntity.getBoardHits());
-        boardDTO.setBoardCreatedDate(boardEntity.getBoardCreatedDate());
-        boardDTO.setBoardHits(boardEntity.getBoardHits());
-        boardDTO.setFileAttached(boardEntity.getFileAttached());
+        boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
+        boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
+
+        if (boardEntity.getFileAttached() == "Y") {
+            boardDTO.setFileAttached(boardEntity.getFileAttached());
+            List<String> originalFileNameList = new ArrayList<>();
+            List<String> storedFileNameList = new ArrayList<>();
+
+            for (BoardFileEntity boardFileEntity : boardEntity.getBoardFileEntityList()) {
+                originalFileNameList.add(boardFileEntity.getOriginalFileName());
+                storedFileNameList.add(boardFileEntity.getStoredFileName());
+            }
+
+            boardDTO.setOriginalFileName(originalFileNameList);
+            boardDTO.setStoredFileName(storedFileNameList);
+
+        } else {
+            boardDTO.setFileAttached(boardEntity.getFileAttached());
+        }
 
         return boardDTO;
     }

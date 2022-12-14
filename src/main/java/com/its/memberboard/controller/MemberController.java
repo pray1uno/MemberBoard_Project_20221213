@@ -56,7 +56,7 @@ public class MemberController {
         if (result != null) {
             model.addAttribute("login", result);
             session.setAttribute("login", result);
-            return "boardPages/board_list";
+            return "redirect:/board/list";
         } else {
             return "index";
         }

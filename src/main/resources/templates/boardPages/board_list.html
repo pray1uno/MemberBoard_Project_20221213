@@ -23,10 +23,29 @@
             <th>수정시간</th>
             <th>조회수</th>
         </tr>
-        <tr>
-
+        <tr th:each="list: ${boardList}">
+            <td th:text="${list.id}"></td>
+            <td th:text="${list.boardTitle}"></td>
+            <td th:text="${list.boardWriter}"></td>
+            <td th:text="*{#temporals.format(list.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="*{#temporals.format(list.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${list.boardHits}"></td>
         </tr>
     </table>
 </div>
+<div class="container">
+    <button onclick="toNewWrite()" class="btn">게시글 작성</button>
+    <button onclick="toHome2()" class="btn btn-outline-primary">홈으로</button>
+</div>
 </body>
+<script th:inline="javascript">
+    const toNewWrite = () => {
+        location.href = "/board/save";
+    }
+
+    const toHome2 = () => {
+        location.href = "/";
+
+    }
+</script>
 </html>
