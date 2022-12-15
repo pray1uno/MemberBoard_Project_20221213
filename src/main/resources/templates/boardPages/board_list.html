@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>board_list</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <sciprt th:src="@{js/axios.min.js}"></sciprt>
+    <script th:src="@{js/axios.min.js}"></script>
     <script th:src="@{/js/jquery.js}"></script>
     <style>
         .container {
@@ -25,7 +25,7 @@
         </tr>
         <tr th:each="list: ${boardList}">
             <td th:text="${list.id}"></td>
-            <td th:text="${list.boardTitle}"></td>
+            <td><a th:href="@{|/board/${list.id}|}" th:text="${list.boardTitle}"></a></td>
             <td th:text="${list.boardWriter}"></td>
             <td th:text="*{#temporals.format(list.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td th:text="*{#temporals.format(list.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -36,6 +36,7 @@
 <div class="container">
     <button onclick="toNewWrite()" class="btn">게시글 작성</button>
     <button onclick="toHome2()" class="btn btn-outline-primary">홈으로</button>
+    <button onclick="toLogout()" class="btn btn-secondary">로그아웃</button>
 </div>
 </body>
 <script th:inline="javascript">
@@ -45,6 +46,10 @@
 
     const toHome2 = () => {
         location.href = "/";
+    }
+
+    const toLogout = () => {
+        location.href = "/member/logout";
 
     }
 </script>

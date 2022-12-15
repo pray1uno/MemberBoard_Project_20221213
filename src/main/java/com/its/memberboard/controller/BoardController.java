@@ -3,11 +3,11 @@ package com.its.memberboard.controller;
 import com.its.memberboard.DTO.BoardDTO;
 import com.its.memberboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,5 +38,34 @@ public class BoardController {
         return "boardPages/board_list";
     }
 
+    @GetMapping("/board/{id}")
+    public String findById(@PathVariable Long id,
+                           Model model) {
+        boardService.updateHits(id);
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("findById", boardDTO);
+        return "boardPages/board_detail";
+    }
+
+    @DeleteMapping("/board/delete/{id}")
+    public ResponseEntity deleteByAxios(@PathVariable Long id) {
+        boardService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/board/update")
+    public String updateForm(@RequestParam("id") Long id,
+                             Model model) {
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("update", boardDTO);
+        return "boardPages/board_update";
+    }
+
+    @PostMapping("/board/update")
+    public String update(@ModelAttribute BoardDTO boardDTO) {
+        boardService.update(boardDTO);
+        return "redirect:/board/list";
+
+    }
 
 }

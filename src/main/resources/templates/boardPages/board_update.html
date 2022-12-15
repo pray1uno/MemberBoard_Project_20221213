@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>board_update</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/axios.min.js}"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+</head>
+<body>
+<div class="container">
+    <form action="/board/update" method="post" name="updateForm">
+        <input type="hidden" name="id" id="id" th:value="${update.id}">
+        <input type="hidden" name="boardHits" id="boardHits" th:value="${update.boardHits}" class="form-control">
+
+        <label for="boardTitle">제목</label>
+        <input type="text" name="boardTitle" id="boardTitle" th:value="${update.boardTitle}" class="form-control">
+
+        <label for="boardWriter">작성자</label>
+        <input type="text" name="boardWriter" id="boardWriter" th:value="${update.boardWriter}" class="form-control"
+               readonly>
+
+        <label for="boardContents">내용</label>
+        <textarea name="boardContents" id="boardContents" cols="30" rows="10" th:value="${update.boardContents}"
+                  class="form-control"></textarea>
+
+        <div>
+            <button class="btn btn-success" onclick="updateResult()">수정완료</button>
+        </div>
+    </form>
+</div>
+</body>
+<script th:inline="javascript">
+    const updateResult = () => {
+        document.updateForm.submit();
+    }
+</script>
+</html>

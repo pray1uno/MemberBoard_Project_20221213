@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>board_detail</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/axios.min.js}"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+
+</head>
+<body>
+<div class="container">
+    <table class="table table-hover">
+        <tr>
+            <th>번호</th>
+            <td th:text="${findById.id}"></td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td th:text="${findById.boardTitle}"></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td th:text="${findById.boardWriter}"></td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td th:text="${findById.boardContents}"></td>
+        </tr>
+        <tr>
+            <th>조회수</th>
+            <td th:text="${findById.boardHits}"></td>
+        </tr>
+        <tr th:if="${findById.fileAttached == 'Y'}">
+            <th>이미지</th>
+            <td th:each="fileName: ${findById.storedFileName}">
+                <img th:src="@{|/upload/${fileName}}" alt="" width="200" height="200">
+            </td>
+        </tr>
+        <tr th:if="${findById.boardWriter == session.login.memberEmail}">
+            <th>수정/삭제</th>
+            <td>
+                <button class="btn btn-warning" th:onclick="boardUpdate([[${findById.id}]])">수정</button>
+                <button class="btn btn-danger" th:onclick="boardDelete([[${findById.id}]])">삭제</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script th:inline="javascript">
+    const boardDelete = (deleteId) => {
+        axios({
+            method: "delete",
+            url: "/board/delete/" + deleteId,
+        }).then(res => {
+            alert("삭제 성공");
+            location.href = "/board/list";
+        }).catch(err => {
+            alert("삭제 실패");
+        })
+    }
+
+    const boardUpdate = (updateId) => {
+        location.href = "/board/update/?id=" + updateId;
+    }
+</script>
+</html>
