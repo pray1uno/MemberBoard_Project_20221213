@@ -10,6 +10,7 @@
 <body>
 <div class="container">
   <button class="btn btn-outline-primary" onclick="adminMemberList()">회원목록</button>
+  <button class="btn btn-outline-primary" onclick="adminBoardList()">게시글목록</button>
   <button class="btn btn-outline-primary" onclick="toHome3()">홈으로</button>
 </div>
 </body>
@@ -20,6 +21,10 @@
 
   const toHome3 = () => {
     location.href = "/";
+  }
+
+  const adminBoardList = () => {
+    location.href = "/board/list";
   }
 </script>
 </html>

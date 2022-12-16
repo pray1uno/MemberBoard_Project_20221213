@@ -44,6 +44,12 @@
                 <button class="btn btn-danger" th:onclick="boardDelete([[${findById.id}]])">삭제</button>
             </td>
         </tr>
+        <tr th:if="${session.login.memberEmail == 'admin'}">
+            <th>삭제</th>
+            <td>
+                <button class="btn btn-danger" th:onclick="boardDelete([[${findById.id}]])">삭제(관리자)</button>
+            </td>
+        </tr>
     </table>
 </div>
 </body>
@@ -63,5 +69,6 @@
     const boardUpdate = (updateId) => {
         location.href = "/board/update/?id=" + updateId;
     }
+
 </script>
 </html>

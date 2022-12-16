@@ -59,8 +59,8 @@ public class MemberController {
             model.addAttribute("login", result);
             return "redirect:" + redirectURL;
         } else if (result.getMemberEmail().equals("admin")) {
-            session.setAttribute("admin", result);
-            model.addAttribute("admin", result);
+            session.setAttribute("login", result);
+            model.addAttribute("login", result);
             return "adminPages/admin";
         } else {
             return "index";
