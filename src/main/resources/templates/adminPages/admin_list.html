@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>admin_list</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/axios.min.js}"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+</head>
+<body>
+<div class="container">
+    <table class="table table-active">
+        <tr>
+            <th>ID</th>
+            <th>memberEmail</th>
+            <th>memberPassword</th>
+            <th>memberName</th>
+            <th>memberMobile</th>
+            <th>회원삭제</th>
+        </tr>
+        <tr th:each="ML : ${memberList}">
+            <td th:text="${ML.id}"></td>
+            <td th:text="${ML.memberEmail}"></td>
+            <td th:text="${ML.memberPassword}"></td>
+            <td th:text="${ML.memberName}"></td>
+            <td th:text="${ML.memberMobile}"></td>
+            <td>
+                <button class="btn btn-danger" th:onclick="adminMemberDelete([[${ML.id}]])">삭제</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script th:inline="javascript">
+    const adminMemberDelete = (deleteId) => {
+        axios({
+            method: "delete",
+            url: "/member/admin/delete/" + deleteId,
+        }).then(res => {
+            alert("삭제 성공");
+            location.href = "/member/admin/list";
+        }).catch(err => {
+            alert("삭제 실패");
+        })
+
+    }
+</script>
+</html>

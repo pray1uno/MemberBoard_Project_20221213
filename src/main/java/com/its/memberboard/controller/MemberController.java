@@ -7,12 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -56,10 +54,14 @@ public class MemberController {
                         @RequestParam(value = "redirectURL", defaultValue = "/board/list") String redirectURL) {
         MemberDTO result = memberService.login(memberDTO);
 
-        if (result != null) {
+        if (result != null && !result.getMemberEmail().equals("admin")) {
             session.setAttribute("login", result);
             model.addAttribute("login", result);
             return "redirect:" + redirectURL;
+        } else if (result.getMemberEmail().equals("admin")) {
+            session.setAttribute("admin", result);
+            model.addAttribute("admin", result);
+            return "adminPages/admin";
         } else {
             return "index";
         }
@@ -69,5 +71,23 @@ public class MemberController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "index";
+    }
+
+    @GetMapping("/member/admin")
+    public String adminForm() {
+        return "adminPages/admin";
+    }
+
+    @GetMapping("/member/admin/list")
+    public String adminFindAll(Model model) {
+        List<MemberDTO> memberDTOList = memberService.findAll();
+        model.addAttribute("memberList", memberDTOList);
+        return "adminPages/admin_list";
+    }
+
+    @DeleteMapping("/member/admin/delete/{id}")
+    public ResponseEntity adminDelete(@PathVariable Long id) {
+        memberService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
