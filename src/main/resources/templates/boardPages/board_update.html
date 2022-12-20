@@ -8,6 +8,7 @@
     <script th:src="@{/js/jquery.js}"></script>
 </head>
 <body>
+<th:block th:replace="layout/header :: header"></th:block>
 <div class="container">
     <form action="/board/update" method="post" name="updateForm">
         <input type="hidden" name="id" id="id" th:value="${update.id}">

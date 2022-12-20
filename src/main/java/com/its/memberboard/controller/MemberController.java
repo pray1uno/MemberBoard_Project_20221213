@@ -90,4 +90,24 @@ public class MemberController {
         memberService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/member/myPage")
+    public String myPageForm() {
+        return "memberPages/member_myPage";
+    }
+
+    @GetMapping("/member/myPage/update")
+    public String myPageUpdateForm(Model model,
+                                   HttpSession session) {
+        MemberDTO result = (MemberDTO) session.getAttribute("login");
+        MemberDTO memberDTO = memberService.findByMemberEmail(result.getMemberEmail());
+        model.addAttribute("myUpdate", memberDTO);
+        return "memberPages/member_myUpdate";
+    }
+
+    @PostMapping("/member/myPage/update")
+    public String myPageUpdate(MemberDTO memberDTO) {
+        memberService.update(memberDTO);
+        return "memberPages/member_myPage";
+    }
 }

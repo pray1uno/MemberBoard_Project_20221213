@@ -62,4 +62,20 @@ public class MemberService {
     public void delete(Long id) {
         memberRepository.deleteById(id);
     }
+
+
+    public MemberDTO findByMemberEmail(String result) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(result);
+
+        if (optionalMemberEntity.isPresent()) {
+            return MemberDTO.toMemberDTO(optionalMemberEntity.get());
+        } else {
+            return null;
+        }
+    }
+
+    public void update(MemberDTO memberDTO) {
+        MemberEntity memberEntity = MemberEntity.toMemberUpdateEntity(memberDTO);
+        memberRepository.save(memberEntity);
+    }
 }

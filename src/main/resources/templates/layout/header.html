@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+    <meta charset="UTF-8">
+    <title>header</title>
+
+    <div class="container">
+        <header class="d-flex justify-content-center py-3">
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="/board/list" class="nav-link">게시글 목록</a></li>
+                <li class="nav-item"><a href="/member/myPage" class="nav-link">마이페이지</a></li>
+            </ul>
+        </header>
+    </div>
+</th:block>
+</html>

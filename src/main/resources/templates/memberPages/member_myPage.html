@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>member_myPage</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{js/axios.min.js}"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+</head>
+<body>
+<th:block th:replace="layout/header :: header"></th:block>
+<div class="container">
+    <button class="btn btn-success" onclick="memberUpdate()">회원정보 수정</button>
+</div>
+</body>
+<script th:inline="javascript">
+    const memberUpdate = () => {
+        location.href = "/member/myPage/update";
+    }
+</script>
+</html>

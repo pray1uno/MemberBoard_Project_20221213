@@ -13,6 +13,7 @@
     </style>
 </head>
 <body>
+<th:block th:replace="layout/header :: header"></th:block>
 <div class="container" id="totalForm">
     <form action="/board/save" method="post" name="boardSaveForm" enctype="multipart/form-data">
         <label for="boardWriter">작성자</label>

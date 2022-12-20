@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>member_login</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <sciprt th:src="@{js/axios.min.js}"></sciprt>
+    <script th:src="@{js/axios.min.js}"></script>
     <script th:src="@{/js/jquery.js}"></script>
 </head>
 <body>
+<th:block th:replace="layout/header :: header"></th:block>
 <div class="container">
     <form action="/member/login" method="post" name="loginForm">
         <label for="memberEmail">이메일</label>

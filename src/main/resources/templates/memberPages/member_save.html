@@ -8,6 +8,7 @@
     <script th:src="@{/js/jquery.js}"></script>
 </head>
 <body>
+<th:block th:replace="layout/header :: header"></th:block>
 <div class="container">
     <form action="/member/save" method="post" enctype="multipart/form-data" name="saveForm">
         <label for="memberEmail">이메일</label>
