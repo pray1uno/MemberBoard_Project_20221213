@@ -16,15 +16,18 @@
 <th:block th:replace="layout/header :: header"></th:block>
 <div class="container">
     <table class="table table-hover">
+        <thead>
         <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성시간</th>
-            <th>수정시간</th>
-            <th>조회수</th>
+            <th scope="col">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">작성시간</th>
+            <th scope="col">수정시간</th>
+            <th scope="col">조회수</th>
         </tr>
-        <tr th:each="list: ${boardList}">
+        </thead>
+        <tbody>
+        <tr th:each="list: ${paging}">
             <td th:text="${list.id}"></td>
             <td><a th:href="@{|/board/${list.id}|}" th:text="${list.boardTitle}"></a></td>
             <td th:text="${list.boardWriter}"></td>
@@ -32,8 +35,44 @@
             <td th:text="*{#temporals.format(list.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td th:text="${list.boardHits}"></td>
         </tr>
+        </tbody>
     </table>
 </div>
+
+<div class="container">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/board/list(page=1)}">
+                <span> ◀ </span>
+            </a>
+        </li>
+
+        <li th:class="${paging.first} ? 'disabled'" class="page-item">
+            <a class="page-link" th:href="${paging.first} ? '#' : @{/board/list(page=${paging.number})}">
+                <span> ＜ </span>
+            </a>
+        </li>
+
+        <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+            th:class="${page == paging.number + 1} ? 'page-item active'" class="page-item">
+            <a class="page-link" th:text="${page}" th:href="@{/board/list(page=${page})}"></a>
+        </li>
+
+        <li th:class="${paging.last} ? 'disabled'">
+            <a class="page-link" th:href="${paging.last} ? '#' : @{/board/list(page=${paging.number +2})}">
+                <span> ＞ </span>
+            </a>
+        </li>
+
+        <li th:class="page-item">
+            <a class="page-link" th:href="@{/board/list(page=${paging.totalPages})}">
+                <span> ▶ </span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
 <div class="container">
     <button onclick="toNewWrite()" class="btn">게시글 작성</button>
     <button onclick="toHome2()" class="btn btn-outline-primary">홈으로</button>

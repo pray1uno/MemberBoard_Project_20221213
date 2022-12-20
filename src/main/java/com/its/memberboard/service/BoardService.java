@@ -6,6 +6,10 @@ import com.its.memberboard.entity.BoardFileEntity;
 import com.its.memberboard.repository.BoardFileRepository;
 import com.its.memberboard.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,15 +52,15 @@ public class BoardService {
         }
     }
 
-    public List<BoardDTO> findAll() {
-        List<BoardEntity> entityList = boardRepository.findAll();
-        List<BoardDTO> boardDTOList = new ArrayList<>();
-
-        for (BoardEntity boardEntity : entityList) {
-            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
-        }
-        return boardDTOList;
-    }
+//    public List<BoardDTO> findAll() {
+//        List<BoardEntity> entityList = boardRepository.findAll();
+//        List<BoardDTO> boardDTOList = new ArrayList<>();
+//
+//        for (BoardEntity boardEntity : entityList) {
+//            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+//        }
+//        return boardDTOList;
+//    }
 
     @Transactional
     public BoardDTO findById(Long id) {
@@ -81,5 +85,22 @@ public class BoardService {
     public void update(BoardDTO boardDTO) {
         BoardEntity boardEntity = BoardEntity.toBoardUpdateEntity(boardDTO);
         boardRepository.save(boardEntity);
+    }
+
+    public Page<BoardDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber() -1;
+        final int pageLimit = 5;
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        Page<BoardDTO> boardDTO = boardEntities.map(
+                board -> new BoardDTO(board.getId(),
+                        board.getBoardTitle(),
+                        board.getBoardWriter(),
+                        board.getBoardContents(),
+                        board.getBoardHits(),
+                        board.getCreatedTime(),
+                        board.getUpdatedTime()
+                )
+        );
+        return boardDTO;
     }
 }
