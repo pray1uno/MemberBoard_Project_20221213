@@ -67,6 +67,8 @@ public class BoardController {
         }
 
         model.addAttribute("findById", boardDTO);
+        System.out.println("boardDTO = " + boardDTO);
+        System.out.println("commentDTOList = " + commentDTOList);
         return "boardPages/board_detail";
     }
 

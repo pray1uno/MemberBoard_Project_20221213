@@ -53,7 +53,7 @@ public class BoardDTO {
         boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
 
-        if (boardEntity.getFileAttached() == "Y") {
+        if (boardEntity.getFileAttached().equals("Y")) {
             boardDTO.setFileAttached(boardEntity.getFileAttached());
             List<String> originalFileNameList = new ArrayList<>();
             List<String> storedFileNameList = new ArrayList<>();
