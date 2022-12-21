@@ -1,7 +1,9 @@
 package com.its.memberboard.controller;
 
 import com.its.memberboard.DTO.BoardDTO;
+import com.its.memberboard.DTO.CommentDTO;
 import com.its.memberboard.service.BoardService;
+import com.its.memberboard.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
+    private final CommentService commentService;
 
 
     @GetMapping("/board/save")
@@ -55,6 +58,14 @@ public class BoardController {
                            Model model) {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+
+        if (commentDTOList.size() > 0) {
+            model.addAttribute("commentList", commentDTOList);
+        } else {
+            model.addAttribute("commentList", "none");
+        }
+
         model.addAttribute("findById", boardDTO);
         return "boardPages/board_detail";
     }

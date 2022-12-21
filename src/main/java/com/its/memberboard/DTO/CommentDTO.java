@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
 @ToString
 public class CommentDTO {
     private Long id;
-    private String CommentWriter;
-    private String CommentContents;
-    private LocalDateTime CommentCreatedDate;
+    private String commentWriter;
+    private String commentContents;
+    private LocalDateTime commentCreatedTime;
+    private Long boardId;
 
     public static CommentDTO toCommentDTO(CommentEntity commentEntity) {
         CommentDTO commentDTO = new CommentDTO();
@@ -22,7 +23,9 @@ public class CommentDTO {
         commentDTO.setId(commentEntity.getId());
         commentDTO.setCommentWriter(commentEntity.getCommentWriter());
         commentDTO.setCommentContents(commentEntity.getCommentContents());
-        commentDTO.setCommentCreatedDate(commentEntity.getCommentCreatedDate());
+        commentDTO.setCommentCreatedTime(commentEntity.getCreatedTime());
+        commentDTO.setBoardId(commentEntity.getBoardEntity().getId());
+
 
         return commentDTO;
     }

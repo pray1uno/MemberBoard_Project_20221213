@@ -11,19 +11,19 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "comment_table")
-public class CommentEntity {
+public class CommentEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 30)
-    private String CommentWriter;
+    private String commentWriter;
 
     @Column(length = 500)
-    private String CommentContents;
+    private String commentContents;
 
     @Column
-    private LocalDateTime CommentCreatedDate;
+    private LocalDateTime commentCreatedTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -38,7 +38,7 @@ public class CommentEntity {
 
         commentEntity.setCommentWriter(commentDTO.getCommentWriter());
         commentEntity.setCommentContents(commentDTO.getCommentContents());
-        commentEntity.setCommentCreatedDate(commentDTO.getCommentCreatedDate());
+        commentEntity.setCommentCreatedTime(commentDTO.getCommentCreatedTime());
         commentEntity.setBoardEntity(entity);
 
         return commentEntity;
