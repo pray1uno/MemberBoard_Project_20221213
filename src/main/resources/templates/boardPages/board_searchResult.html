@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>board_search_result</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{js/axios.min.js}"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+    <style>
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="layout/header :: header"></th:block>
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">작성시간</th>
+            <th scope="col">수정시간</th>
+            <th scope="col">조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result : ${paging}">
+            <td th:text="${result.id}"></td>
+            <td><a th:href="@{|/board/${result.id}|}" th:text="${result.boardTitle}"></a></td>
+            <td th:text="${result.boardWriter}"></td>
+            <td th:text="*{#temporals.format(result.getBoardCreatedTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="*{#temporals.format(result.getBoardUpdatedTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${result.getBoardHits()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/board/search(page=1,type=${type},keyword=${keyword})}">
+                <span> ◀ </span>
+            </a>
+        </li>
+
+        <li th:class="${paging.first} ? 'disabled'" class="page-item">
+            <a class="page-link" th:href="${paging.first} ? '#' : @{/board/search(page=${paging.number},type=${type},keyword=${keyword})}">
+                <span> ＜ </span>
+            </a>
+        </li>
+
+        <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+            th:class="${page == paging.number + 1} ? 'page-item active'" class="page-item">
+            <a class="page-link" th:text="${page}" th:href="@{/board/search(page=${page},type=${type},keyword=${keyword})}"></a>
+        </li>
+
+        <li th:class="${paging.last} ? 'disabled'">
+            <a class="page-link" th:href="${paging.last} ? '#' : @{/board/search(page=${paging.number + 2},type=${type},keyword=${keyword})}">
+                <span> ＞ </span>
+            </a>
+        </li>
+
+        <li th:class="page-item">
+            <a class="page-link" th:href="@{/board/search(page=${paging.totalPages},type=${type},keyword=${keyword})}">
+                <span> ▶ </span>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

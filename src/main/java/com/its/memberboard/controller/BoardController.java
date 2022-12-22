@@ -93,4 +93,26 @@ public class BoardController {
 
     }
 
+    @GetMapping("/board/search")
+    public String search(@RequestParam("type") String type,
+                         @RequestParam("keyword") String keyword,
+                         @PageableDefault(page = 1) Pageable pageable,
+                         Model model) {
+        System.out.println("type = " + type + ", keyword = " + keyword + ", pageable = " + pageable + ", model = " + model);
+        Page<BoardDTO> searchList = boardService.search(type, keyword, pageable);
+        model.addAttribute("paging", searchList);
+
+        model.addAttribute("type", type);
+        model.addAttribute("keyword", keyword);
+
+        int blockLimit = 5;
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = ((startPage + blockLimit - 1) < searchList.getTotalPages()) ? startPage + blockLimit - 1 : searchList.getTotalPages();
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "boardPages/board_searchResult";
+    }
+
+
 }

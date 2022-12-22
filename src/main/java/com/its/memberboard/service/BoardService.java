@@ -103,4 +103,33 @@ public class BoardService {
         );
         return boardDTO;
     }
+
+    @Transactional
+    public Page<BoardDTO> search(String type, String keyword, Pageable pageable) {
+        int page = pageable.getPageNumber();
+        page = (page == 1) ? 0 : (page -1);
+
+        final int pageLimit = 5;
+
+        Page<BoardEntity> searchEntity = null;
+
+        if (type.equals("boardTitle")) {
+            searchEntity = boardRepository.findByBoardTitleContainingOrderByIdDesc(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        } else if (type.equals("boardWriter")) {
+            searchEntity = boardRepository.findByBoardWriterContainingOrderByIdDesc(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        }
+
+        Page<BoardDTO> boardDTOPage = searchEntity.map(
+                board -> new BoardDTO(board.getId(),
+                        board.getBoardTitle(),
+                        board.getBoardWriter(),
+                        board.getBoardHits(),
+                        board.getCreatedTime(),
+                        board.getUpdatedTime())
+        );
+
+        return boardDTOPage;
+    }
+
+
 }
